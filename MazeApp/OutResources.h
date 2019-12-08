@@ -15,4 +15,8 @@ using namespace std;
 const int MAX_ROWS = 25;
 const int MAX_COLUMNS = 80;
 
+enum Direction{
+	RIGHT = 0, DOWN = 1, LEFT = 2, UP = 3
+};
+
 #endif // __OUT_RESOURCES_H

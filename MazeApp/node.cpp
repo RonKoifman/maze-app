@@ -32,7 +32,6 @@ bool Node::setVertex(Vertex& v)
 	return true;
 }
 
-
 Vertex Node::getVertex()
 {
 	return Node::v;

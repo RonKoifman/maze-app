@@ -1,5 +1,9 @@
 #include "Vertex.h"
 
+Vertex::Vertex() : x(0), y(0), data('\0')
+{
+}
+
 Vertex::Vertex(int x, int y, char data) : x(x), y(y), data(data)
 {
 }

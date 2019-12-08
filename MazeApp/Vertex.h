@@ -8,7 +8,7 @@ private:
 	int y;
 	char data;
 public:
-	Vertex() = default;
+	Vertex();
 	Vertex(int x, int y, char data);
 	void showData();
 	void printVertex();
