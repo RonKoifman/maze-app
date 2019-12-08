@@ -147,6 +147,9 @@
     <ClInclude Include="node.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OutResources.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
