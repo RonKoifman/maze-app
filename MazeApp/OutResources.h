@@ -4,9 +4,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 using namespace std;
 
 // Consts declaration
