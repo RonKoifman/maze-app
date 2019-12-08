@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Maze.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Maze.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Vertex.h" />

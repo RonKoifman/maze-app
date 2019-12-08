@@ -1,35 +1,46 @@
 #include "Vertex.h"
 
-Vertex::Vertex(int x, int y, char data) : x(x), y(y), data(data)
+Vertex::Vertex() // Default C'tor
+	: x(0), y(0), data('\0')
 {
 }
 
-bool Vertex::setX(int x)
+Vertex::Vertex(int x, int y, char data)
+	: x(x), y(y), data(data) // C'tor
 {
-	Vertex::x = x;
 }
 
-bool Vertex::setY(int y)
+void Vertex::show()
 {
-	Vertex::y = y;
+	cout << "X = " << x << ", Y = " << y << ", Data = " << data << endl;
 }
 
-bool Vertex::setData(char data)
+void Vertex::setX(int x)
 {
-	Vertex::data = data;
+	this->x = x;
+}
+
+void Vertex::setY(int y)
+{
+	this->y = y;
+}
+
+void Vertex::setData(char data)
+{
+	this->data = data;
 }
 
 int Vertex::getX()
 {
-	return Vertex::x;
+	return x;
 }
 
 int Vertex::getY()
 {
-	return Vertex::y;
+	return y;
 }
 
 char Vertex::getData()
 {
-	return Vertex::data;
+	return data;
 }
