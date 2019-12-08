@@ -140,9 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Queue.cpp" />
-=======
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="Vertex.cpp" />
@@ -151,7 +149,6 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Vertex.h" />
->>>>>>> af25e367e14501538bfa166fb6af01eca1e55808
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OutResources.h" />
