@@ -8,8 +8,10 @@ private:
 	int y;
 	char data;
 public:
+	Vertex() = default;
 	Vertex(int x, int y, char data);
-	Vertex(Vertex& other) = delete;
+	void showData();
+	void printVertex();
 	//setters
 	bool setX(int x);
 	bool setY(int y);
