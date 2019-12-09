@@ -31,6 +31,9 @@ private:
 	void createRandomMaze(int rows, int columns);
 	bool checkNeighbors(char** maze, Vertex vertex);
 	Vertex getRandomNeighbor(char** maze, Vertex vertex);
+	void removeWall(Vertex& vertex, Vertex& neighbor);
+	void clearMaze();
+	
 };
 
 #endif // __MAZE_H

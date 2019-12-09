@@ -62,7 +62,7 @@ void Maze::setMaze(char** maze, int rows, int columns)
 void Maze::setInitMaze(int rows, int columns)
 {
 	int row, col;
-	char** maze = new char*[rows]; // Allocate maze rows
+	maze = new char*[rows]; // Allocate maze rows
 
 	for (row = 0; row < rows; row++)
 	{
@@ -125,7 +125,7 @@ int Maze::getColumns() const
 void Maze::createRandomMaze(int rows, int columns)
 {
 	Stack stack;
-	Vertex vertex = Vertex(1, 1, ' ');
+	Vertex vertex(1, 1, ' ');
 	Vertex neighbor;
 
 	stack.makeEmpty();
@@ -139,30 +139,33 @@ void Maze::createRandomMaze(int rows, int columns)
 		if (checkNeighbors(maze, vertex))
 		{
 			neighbor = getRandomNeighbor(maze, vertex);
-			// TODO: removeWall(vertex, neighbor);
+			removeWall(vertex, neighbor);
 			stack.push(vertex);
 			stack.push(neighbor);
 		}
 	}
-
-	// TODO: clearMaze(maze);
+	show();
+	cout << endl;
+	clearMaze();
 }
 
 bool Maze::checkNeighbors(char** maze, Vertex vertex)
 {
-	if (vertex.getY() != (columns - 2) && maze[vertex.getX()][vertex.getY() + 2] != WALL && maze[vertex.getX()][vertex.getY() + 2] != PATH) // Right
+	int vertexX = vertex.getX(), vertexY = vertex.getY();
+
+	if (vertexY != (columns - 2) && maze[vertexX][vertexY + 2] != WALL && maze[vertexX][vertexY + 2] != PATH) // Right
 	{
 		return true;
 	}
-	else if (vertex.getX() != (rows - 2) && maze[vertex.getX() + 2][vertex.getY()] != WALL && maze[vertex.getX() + 2][vertex.getY()] != PATH) // Down
+	else if (vertexX != (rows - 2) && maze[vertexX + 2][vertexY] != WALL && maze[vertexX + 2][vertexY] != PATH) // Down
 	{
 		return true;
 	}
-	else if (vertex.getY() != 1 && maze[vertex.getX()][vertex.getY() - 2] != WALL && maze[vertex.getX() + 2][vertex.getY()] != PATH) // Left
+	else if (vertexY != 1 && maze[vertexX][vertexY - 2] != WALL && maze[vertexX][vertexY - 2] != PATH) // Left
 	{
 		return true;
 	}
-	else if (vertex.getX() != 1 && maze[vertex.getX() - 2][vertex.getY()] != WALL && maze[vertex.getX() + 2][vertex.getY()] != PATH) // Up
+	else if (vertexX != 1 && maze[vertexX - 2][vertexY] != WALL && maze[vertexX - 2][vertexY] != PATH) // Up
 	{
 		return true;
 	}
@@ -175,52 +178,94 @@ bool Maze::checkNeighbors(char** maze, Vertex vertex)
 Vertex Maze::getRandomNeighbor(char** maze, Vertex vertex)
 {
 	Vertex neighbor;
+	int vertexX = vertex.getX(), vertexY = vertex.getY();
+
 
 	while (neighbor.getData() == '\0') 
 	{
-		srand((unsigned)time(NULL));
+		//srand((unsigned)time(NULL));
 		int i = rand() % 4;
 
 		switch (i)
 		{
 		case RIGHT:
 		{
-			if (vertex.getY() != (columns - 2) && maze[vertex.getX()][vertex.getY() + 2] != WALL && maze[vertex.getX()][vertex.getY() + 2] != PATH) // Right
+			if (vertexY != (columns - 2) && maze[vertexX][vertexY + 2] != WALL && maze[vertexX][vertexY + 2] != PATH) // Right
 			{
-				neighbor.setX(vertex.getX());
-				neighbor.setX(vertex.getY() + 2);
+				neighbor.setX(vertexX);
+				neighbor.setY(vertexY + 2);
 				neighbor.setData(FREE);
 			}
+			break;
 		}
 		case DOWN:
 		{
-			if (vertex.getX() != (rows - 2) && maze[vertex.getX() + 2][vertex.getY()] != WALL && maze[vertex.getX() + 2][vertex.getY()] != PATH) // Down
+			if (vertexX != (rows - 2) && maze[vertexX + 2][vertexY] != WALL && maze[vertexX + 2][vertexY] != PATH) // Down
 			{
-				neighbor.setX(vertex.getX() + 2);
-				neighbor.setX(vertex.getY());
+				neighbor.setX(vertexX + 2);
+				neighbor.setY(vertexY);
 				neighbor.setData(FREE);
 			}
+			break;
 		}
 		case LEFT:
 		{
-			if (vertex.getY() != 1 && maze[vertex.getX()][vertex.getY() - 2] != WALL && maze[vertex.getX() + 2][vertex.getY()] != PATH) // Left
+			if (vertexY != 1 && maze[vertexX][vertexY - 2] != WALL && maze[vertexX][vertexY - 2] != PATH) // Left
 			{
-				neighbor.setX(vertex.getX());
-				neighbor.setX(vertex.getY() - 2);
+				neighbor.setX(vertexX);
+				neighbor.setY(vertexY - 2);
 				neighbor.setData(FREE);
 			}
 		}
 		case UP:
 		{
-			if (vertex.getX() != 1 && maze[vertex.getX() - 2][vertex.getY()] != WALL && maze[vertex.getX() + 2][vertex.getY()] != PATH) // Up
+			if (vertexX != 1 && maze[vertexX - 2][vertexY] != WALL && maze[vertexX - 2][vertexY] != PATH) // Up
 			{
-				neighbor.setX(vertex.getX() - 2);
-				neighbor.setX(vertex.getY());
+				neighbor.setX(vertexX - 2);
+				neighbor.setY(vertexY);
 				neighbor.setData(FREE);
 			}
+			break;
 		}
 		}
 	}
 
 	return neighbor;
+}
+
+void Maze::removeWall(Vertex& vertex, Vertex& neighbor)
+{
+	int neighborX = neighbor.getX(), vertexX = vertex.getX();
+	int neighborY = neighbor.getY(), vertexY = vertex.getY();
+	if (vertex.getX() == neighbor.getX()) {
+		if (neighborY > vertexY) {
+			maze[vertexX][vertexY + 1] = ' ';
+		}
+		else {
+			maze[vertexX][vertexY - 1] = ' ';
+		}
+	}
+	else {
+		if (neighborX > vertexX) {
+			maze[vertexX + 1][vertexY] = ' ';
+		}
+		else {
+			maze[vertexX - 1][vertexY] = ' ';
+		}
+	}
+}
+
+void Maze::clearMaze()
+{
+	int row, col;
+	for (row = 0; row < rows; row++)
+	{
+		for (col = 0; col < columns; col++)
+		{
+			if (maze[row][col] == PATH) {
+				maze[row][col] = FREE;
+			}
+		}
+
+	}
 }

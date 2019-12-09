@@ -1,30 +1,17 @@
 #include "Maze.h"
+#include <ctime>
 
 int main()
 {
-	Stack s;
-	Vertex v;
-	char c;
+	srand((unsigned)time(NULL));
+	std::time_t result = std::time(nullptr);
+	std::cout << std::asctime(std::localtime(&result));
 
-	cout << "Enter vertex data: ";
-	cin >> c;
+	Maze maze(11, 11);
+	maze.show();
 
-	while (c != '$') 
-	{
-		v = Vertex((int)c, (int)c, c);
-		s.push(v);
-		v.show();
-		cout << endl;
-
-		cout << "\nEnter vertex data: ";
-		cin >> c;
-	}
-
-	while (!s.isEmpty()) 
-	{
-		s.pop().show();
-		cout << endl;
-	}
+	result = std::time(nullptr);
+	std::cout << std::asctime(std::localtime(&result));
 
 	// TODO: if user enters his own maze - need to check for valid maze standards
 
