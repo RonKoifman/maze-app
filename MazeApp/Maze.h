@@ -5,6 +5,8 @@
 #include "Stack.h"
 #include "Queue.h"
 
+const int MAX_NEIGHBORS = 4;
+
 class Maze
 {
 private:
@@ -12,13 +14,19 @@ private:
 	int rows;
 	int columns;
 public:
+	enum Direction
+	{
+		RIGHT = 0, DOWN = 1, LEFT = 2, UP = 3
+	};
+
 	Maze(int rows, int columns, char** maze = nullptr); // C'tor
 	Maze(Maze& other) = delete; // Disable copy c'tor
 	~Maze(); // D'tor
 	void show();
+	void solveMaze();
 	// Setters
-	void setMaze(char** maze, int rows, int columns);
-	void setInitMaze(int rows, int columns);
+	void setMaze(char** maze);
+	void setInitMaze();
 	void setRows(int rows);
 	void setColumns(int columns);
 	// Getters
@@ -28,9 +36,14 @@ public:
 
 private:
 	// Private functions
-	void createRandomMaze(int rows, int columns);
-	bool checkNeighbors(char** maze, Vertex vertex);
-	Vertex getRandomNeighbor(char** maze, Vertex vertex);
+	void createRandomMaze();
+	void getNeighbors(Vertex vertex, Vertex neighbors[], int &numOfNeighbors);
+	bool checkNeighbors(Vertex vertex);
+	Vertex getRandomNeighbor(Vertex vertex);
+	// void solveMaze();
+	void addAllAccessibleNeighbors(Vertex visitedVertex, Queue& queue);
+	void removeWall(Vertex& vertex, Vertex& neighbor);
+	void clearMaze();
 };
 
 #endif // __MAZE_H

@@ -5,7 +5,7 @@ Node::Node() // C'tor
 {
 }
 
-Node::Node(Vertex v, Node* next) // Copy C'tor
+Node::Node(Vertex vertex, Node* next) // Copy C'tor
 	: vertex(vertex), next(next)
 {
 }

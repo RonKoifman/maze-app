@@ -25,9 +25,4 @@ const enum Error
 	EMPTY_STACK_ERROR = 4
 };
 
-const enum Direction
-{
-	RIGHT = 0, DOWN = 1, LEFT = 2, UP = 3
-};
-
 #endif // __OUT_RESOURCES_H

@@ -2,33 +2,22 @@
 
 int main()
 {
-	Stack s;
-	Vertex v;
-	char c;
+	srand((unsigned)time(NULL));
 
-	cout << "Enter vertex data: ";
-	cin >> c;
+	// CHECKING RANDOM MAZE
+	Maze maze(11, 11);
+	maze.show();
+	maze.solveMaze();
+	cout << endl << "=============================================================\n" << endl;
+	maze.show();
+	cout << endl;
 
-	while (c != '$') 
-	{
-		v = Vertex((int)c, (int)c, c);
-		s.push(v);
-		v.show();
-		cout << endl;
+	// Input options:
+	// 1.User's maze(num of rows, num of cols, strings) 2.Random maze(num of rows, num of cols)
 
-		cout << "\nEnter vertex data: ";
-		cin >> c;
-	}
-
-	while (!s.isEmpty()) 
-	{
-		s.pop().show();
-		cout << endl;
-	}
-
-	// TODO: if user enters his own maze - need to check for valid maze standards
+	// If user enters his own maze - need to check for valid maze standards
 
 	// NOTE: no need to free user's maze - the d'tor of the class maze will do it.
 	// Only if we caught an error in the input validation - we will not create the maze object and
-	// free it manually before executing the exit function
+	// free manually char** maze before executing the exit function
 }
