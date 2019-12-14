@@ -1,12 +1,12 @@
 #include "Maze.h"
 
-Maze::Maze(int rows, int columns, char ** maze)
+Maze::Maze(int rows, int columns, char** maze) // C'tor for user's maze
 	:maze(maze), rows(rows), columns(columns)
 {
-	readMaze();
+	setUserMaze();
 }
 
-Maze::Maze(int rows, int columns) // C'tor
+Maze::Maze(int rows, int columns) // C'tor for random maze
 	: maze(nullptr), rows(rows), columns(columns)
 {
 	if (rows % 2 == 1 && columns % 2 == 1) // Both rows and columns have to be odd numbers for valid random maze
@@ -27,7 +27,6 @@ Maze::~Maze()
 	{
 		delete[] maze[i];
 	}
-
 	delete[] maze;
 }
 
@@ -43,22 +42,83 @@ void Maze::show()
 	}
 }
 
-void Maze::readMaze()
+bool Maze::checkLine(char* line, int row)
+{
+	int col;
+	bool res = true;
+
+	if (strlen(line) != columns) 
+	{
+		res = false;
+	}
+	else 
+	{
+		for (col = 0; col < columns; col++) 
+		{
+			if (row == 0 || row == rows - 1) 
+			{ 
+				if (maze[row][col] != WALL) // Upper and lower wall check
+				{
+					res = false;
+				}
+			}
+			else if (col == 0 || col == columns - 1) // Side walls check
+			{ 
+				if ((row == 1 && col == 0)|| (row == rows - 2 && col == columns - 1))
+				{ 
+					if (maze[row][col] != FREE) // Entry and exit points
+					{
+						res = false;
+					}
+				}
+				else if (maze[row][col] != WALL)
+				{
+					res = false;
+				}
+			}
+			else if (maze[row][col] != WALL && maze[row][col] != FREE)
+			{
+				res = false;
+			}
+		}
+	}
+	return res;
+}
+
+
+void Maze::setUserMaze()
 {
 	delete[] maze; // Free previous maze if exists
 
-	maze = new char*[rows]; // Allocate maze all rows
+	maze = new char*[rows]; // Allocate maze rows
 	cin.ignore();
 	for (int i = 0; i < rows; i++)
 	{
-		maze[i] = new char[columns + 1]; // Allocate maze each row
-		cin.getline(maze[i], columns + 1); // Read each row to the maze
+		maze[i] = new char[columns + 1]; // Allocate each maze column
+		cin.getline(maze[i], columns + 1); 
+		if (!checkLine(maze[i], i))
+		{
+			freeAllocatedMaze(i); // Free the allocated rows before exit
+			cout << "invalid input" << endl;
+			exit(INVALID_INPUT_ERROR);
+		}
 	}
+}
+
+void Maze::freeAllocatedMaze(int allocatedRows)
+{
+	for (int i = 0; i < allocatedRows; i++)
+	{
+		delete[] maze[i];
+	}
+
+	delete[] maze;
 }
 
 void Maze::setInitMaze()
 {
 	int row, col;
+
 	maze = new char*[rows]; // Allocate maze rows
 
 	for (row = 0; row < rows; row++)
@@ -237,6 +297,12 @@ void Maze::addAllAccessibleNeighbors(Vertex visitedVertex, Queue& queue)
 	for (int i = 0; i < numOfNeighbors; i++) // Enqueue unvisited neighbors
 	{
 		queue.enqueue(neighbors[i]);
+	}
+
+	if (numOfNeighbors == 0 && queue.isEmpty()) // No solution
+	{
+		cout << "no solution" << endl;
+		exit(NO_SOLUTION_ERROR);
 	}
 }
 

@@ -18,13 +18,16 @@ public:
 	{
 		RIGHT, DOWN, LEFT, UP
 	};
-	Maze(int rows, int columns, char** maze); // C'tor
-	Maze(int rows, int columns); // C'tor
+	Maze(int rows, int columns, char** maze); // C'tor for user's maze
+	Maze(int rows, int columns); // C'tor for random maze
 	Maze(Maze& other) = delete; // Disable copy c'tor
 	~Maze(); // D'tor
 	void show();
 	void solveMaze();
+	bool checkLine(char* line, int row);
+	void freeAllocatedMaze(int allocatedRows);
 	// Setters
+	void setUserMaze();
 	void setInitMaze();
 	void setRows(int rows);
 	void setColumns(int columns);
@@ -32,7 +35,6 @@ public:
 	char** getMaze();
 	int getRows() const;
 	int getColumns() const;
-	void readMaze();
 
 private:
 	// Private functions
