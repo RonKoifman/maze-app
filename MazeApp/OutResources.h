@@ -17,7 +17,7 @@ const char WALL = '*';
 const char PATH = '$';
 
 // enums declaration
-const enum Error
+enum Error
 {
 	INVALID_INPUT_ERROR = 1,
 	EMPTY_QUE_ERROR = 2,
