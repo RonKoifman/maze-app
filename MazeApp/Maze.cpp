@@ -1,30 +1,29 @@
 #include "Maze.h"
 
-Maze::Maze(int rows, int columns, char** maze) // C'tor
+Maze::Maze(int rows, int columns, char ** maze)
+	:maze(maze), rows(rows), columns(columns)
+{
+	readMaze();
+}
+
+Maze::Maze(int rows, int columns) // C'tor
 	: maze(nullptr), rows(rows), columns(columns)
 {
-	if (maze) // Set user's maze
+	if (rows % 2 == 1 && columns % 2 == 1) // Both rows and columns have to be odd numbers for valid random maze
 	{
-		setMaze(maze);
+		setInitMaze();
+		createRandomMaze();
 	}
-	else // Initialize maze and create random maze
+	else // Invalid input
 	{
-		if (rows % 2 == 1 && columns % 2 == 1) // Both rows and columns have to be odd numbers for valid random maze
-		{
-			setInitMaze();
-			createRandomMaze();
-		}
-		else // Invalid input
-		{
-			cout << "Invalid input!" << endl;
-			exit(INVALID_INPUT_ERROR);
-		}
+		cout << "Invalid input!" << endl;
+		exit(INVALID_INPUT_ERROR);
 	}
 }
 
 Maze::~Maze()
 {
-	for (int i = 0; i < columns; i++)
+	for (int i = 0; i < rows; i++)
 	{
 		delete[] maze[i];
 	}
@@ -38,21 +37,22 @@ void Maze::show()
 	{
 		for (int j = 0; j < columns; j++)
 		{
-			cout << maze[i][j] << " ";
+			cout << maze[i][j];
 		}
 		cout << endl;
 	}
 }
 
-void Maze::setMaze(char** maze)
+void Maze::readMaze()
 {
-	delete[] this->maze; // Free previous maze if exists
+	delete[] maze; // Free previous maze if exists
 
-	this->maze = new char*[rows]; // Allocate maze rows
+	maze = new char*[rows]; // Allocate maze all rows
+	cin.ignore();
 	for (int i = 0; i < rows; i++)
 	{
-		this->maze[i] = new char[columns + 1]; // Allocate maze columns
-		strcpy(this->maze[i], maze[i]); // Copy each row from the given maze to the current maze
+		maze[i] = new char[columns + 1]; // Allocate maze each row
+		cin.getline(maze[i], columns + 1); // Read each row to the maze
 	}
 }
 

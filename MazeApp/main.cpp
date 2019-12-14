@@ -2,8 +2,11 @@
 
 int main()
 {
+	int selection, rows, columns;
+
 	srand((unsigned)time(NULL));
 
+<<<<<<< HEAD
 	// CHECKING RANDOM MAZE
 	Maze maze(25, 25);
 	maze.show();
@@ -11,6 +14,25 @@ int main()
 	cout << endl << "=============================================================\n" << endl;
 	maze.show();
 	cout << endl;
+=======
+	cout << "Maze: 1) From input 2) Random" << endl;
+	cin >> selection;
+
+	cin >> rows;
+	cin >> columns;
+	if (selection == 1) // From input
+	{
+		Maze maze(rows, columns, nullptr);
+		maze.solveMaze();
+		maze.show();
+	}
+	else // Random
+	{
+		Maze maze(rows, columns); // Create random maze
+		maze.solveMaze();
+		maze.show();
+	}
+>>>>>>> 8fee26624a8c550f79589828275fb776c9c4776a
 
 	// Input options:
 	// 1.User's maze(num of rows, num of cols, strings) 2.Random maze(num of rows, num of cols)
