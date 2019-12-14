@@ -5,7 +5,7 @@ int main()
 	srand((unsigned)time(NULL));
 
 	// CHECKING RANDOM MAZE
-	Maze maze(11, 11);
+	Maze maze(25, 25);
 	maze.show();
 	maze.solveMaze();
 	cout << endl << "=============================================================\n" << endl;
