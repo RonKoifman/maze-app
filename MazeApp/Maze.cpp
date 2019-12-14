@@ -309,6 +309,38 @@ void Maze::clearMaze()
 	}
 }
 
+bool Maze::checkLine(string line, int row)
+{
+	int col;
+	bool res = true;
+
+	if (line.length() != columns) {
+		res = false;
+	}
+	else {
+		for (col = 0; col < columns; col++) {
+			if (row == 0 || row == rows - 1) { // Upper & lower wall check.
+				if (maze[row][col] != WALL) {
+					res = false;
+				}
+			}
+			else if (col == 0 || col == columns - 1) { // Side walls check.
+				if (row == 1 || row == rows - 2) { //Entry and exit points.
+					if (maze[row][col] != FREE)
+						res = false;
+				}
+				else if (maze[row][col] != WALL) {
+					res = false;
+				}
+			}
+			else if (maze[row][col] != WALL || maze[row][col] != FREE) {
+				res = false;
+			}
+		}
+	}
+	return res;
+}
+
 bool Maze::checkNeighbors(Vertex vertex)
 {
 	int x = vertex.getX(), y = vertex.getY();

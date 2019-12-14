@@ -44,6 +44,7 @@ private:
 	void addAllAccessibleNeighbors(Vertex visitedVertex, Queue& queue);
 	void removeWall(Vertex& vertex, Vertex& neighbor);
 	void clearMaze();
+	bool checkLine(string line, int row);
 };
 
 #endif // __MAZE_H
