@@ -325,7 +325,7 @@ bool Maze::checkLine(string line, int row)
 				}
 			}
 			else if (col == 0 || col == columns - 1) { // Side walls check.
-				if (row == 1 || row == rows - 2) { //Entry and exit points.
+				if ((row == 1  && col == 0) || (row == rows - 2  && col == columns - 1)) { //Entry and exit points.
 					if (maze[row][col] != FREE)
 						res = false;
 				}
