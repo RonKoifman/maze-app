@@ -5,7 +5,6 @@ int main()
 	int selection, rows, columns;
 
 	srand((unsigned)time(NULL));
-
 	cout << "Maze: 1) From input 2) Random" << endl;
 	cin >> selection;
 	cin >> rows;
