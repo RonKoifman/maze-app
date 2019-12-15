@@ -5,14 +5,9 @@ Vertex::Vertex() // Default C'tor
 {
 }
 
-Vertex::Vertex(int x, int y, char data)
-	: x(x), y(y), data(data) // C'tor
+Vertex::Vertex(int x, int y, char data) // C'tor
+	: x(x), y(y), data(data) 
 {
-}
-
-void Vertex::show()
-{
-	cout << "X = " << x << ", Y = " << y << ", Data = " << data << endl;
 }
 
 void Vertex::setX(int x)

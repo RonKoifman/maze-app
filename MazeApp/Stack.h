@@ -11,6 +11,7 @@ private:
 
 public:
 	Stack(); // C'tor
+	Stack(Stack& other) = delete; // Disable copy c'tor
 	~Stack(); // D'tor
 	void makeEmpty();
 	bool isEmpty();

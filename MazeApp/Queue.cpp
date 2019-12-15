@@ -1,6 +1,7 @@
 #include "Queue.h"
 
 Queue::Queue(int size) // C'tor
+	: size(size)
 {
 	data = new Vertex[size];
 	makeEmpty();
@@ -15,6 +16,7 @@ void Queue::makeEmpty() // Make an empty queue
 {
 	head = 1;
 	tail = 0;
+	numOfDataElements = 0;
 }
 
 bool Queue::isEmpty() // Check if the queue is empty
@@ -41,12 +43,14 @@ void Queue::enqueue(Vertex vertex) // Add item to the end of the queue
 	}
 	tail = addOne(tail);
 	data[tail] = vertex;
+	numOfDataElements++;
 }
 
 Vertex Queue::dequeue() // Remove first item in the queue and return it
 {
 	Vertex vertex = data[head];
 	head = addOne(head);
+	numOfDataElements--;
 	return vertex;
 }
 

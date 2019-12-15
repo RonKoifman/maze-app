@@ -10,7 +10,9 @@ private:
 	int head;
 	int tail;
 	Vertex* data;
+	int numOfDataElements;
 	int size;
+
 public:
 	Queue(int size); // C'tor
 	Queue(Queue& other) = delete; // Disable copy c'tor
@@ -20,6 +22,10 @@ public:
 	Vertex front();
 	void enqueue(Vertex vertex);
 	Vertex dequeue();
+	// Friend functions
+	friend void freeAllocatedQueue(Queue& queue);
+	friend bool isNeighborExists(Queue& queue, Vertex& neighbor);
+
 private:
 	int addOne(int index);
 };

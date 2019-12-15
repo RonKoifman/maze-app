@@ -5,7 +5,7 @@
 #include "Stack.h"
 #include "Queue.h"
 
-const int MAX_NEIGHBORS = 4;
+const int MAX_NEIGHBORS = 3;
 
 class Maze
 {
@@ -13,22 +13,21 @@ private:
 	char** maze;
 	int rows;
 	int columns;
+
 public:
 	enum Direction
 	{
 		RIGHT, DOWN, LEFT, UP
 	};
-	Maze(int rows, int columns, char** maze); // C'tor for user's maze
-	Maze(int rows, int columns); // C'tor for random maze
+
+	Maze(int rows, int columns); // C'tor
 	Maze(Maze& other) = delete; // Disable copy c'tor
 	~Maze(); // D'tor
 	void show();
 	void solveMaze();
-	bool checkLine(char* line, int row);
-	void freeAllocatedMaze(int allocatedRows);
 	// Setters
 	void setUserMaze();
-	void setInitMaze();
+	void setRandomMaze();
 	void setRows(int rows);
 	void setColumns(int columns);
 	// Getters
@@ -38,15 +37,16 @@ public:
 
 private:
 	// Private functions
+	void initMaze();
 	void createRandomMaze();
 	void getNeighbors(Vertex vertex, Vertex neighbors[], int &numOfNeighbors);
 	bool checkNeighbors(Vertex vertex);
 	Vertex getRandomNeighbor(Vertex vertex);
-	// void solveMaze();
 	void addAllAccessibleNeighbors(Vertex visitedVertex, Queue& queue);
 	void removeWall(Vertex& vertex, Vertex& neighbor);
 	void clearMaze();
-	bool checkLine(string line, int row);
+	void freeAllocatedMaze(int allocatedRows);
+	bool checkLine(char* line, int currRow);
 };
 
 #endif // __MAZE_H

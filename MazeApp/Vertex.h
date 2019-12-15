@@ -9,10 +9,10 @@ private:
 	int x;
 	int y;
 	char data;
+
 public:
 	Vertex(); // Default C'tor
 	Vertex(int x, int y, char data); // C'tor
-	void show();
 	// Setters
 	void setX(int x);
 	void setY(int y);

@@ -1,32 +1,17 @@
 #include "Maze.h"
 
-Maze::Maze(int rows, int columns, char** maze) // C'tor for user's maze
-	:maze(maze), rows(rows), columns(columns)
+Maze::Maze(int rows, int columns) // C'tor
+	:maze(nullptr), rows(rows), columns(columns)
 {
-	setUserMaze();
 }
 
-Maze::Maze(int rows, int columns) // C'tor for random maze
-	: maze(nullptr), rows(rows), columns(columns)
-{
-	if (rows % 2 == 1 && columns % 2 == 1) // Both rows and columns have to be odd numbers for valid random maze
-	{
-		setInitMaze();
-		createRandomMaze();
-	}
-	else // Invalid input
-	{
-		cout << "Invalid input!" << endl;
-		exit(INVALID_INPUT_ERROR);
-	}
-}
-
-Maze::~Maze()
+Maze::~Maze() // D'tor
 {
 	for (int i = 0; i < rows; i++)
 	{
 		delete[] maze[i];
 	}
+
 	delete[] maze;
 }
 
@@ -42,47 +27,43 @@ void Maze::show()
 	}
 }
 
-bool Maze::checkLine(char* line, int row)
+bool Maze::checkLine(char* line, int currRow)
 {
-	int col;
-	bool res = true;
-
-	if (strlen(line) != columns) 
+	if (strlen(line) != columns) // Invalid line length
 	{
-		res = false;
+		return false;
 	}
-	else 
+	
+	for (int col = 0; col < columns; col++)
 	{
-		for (col = 0; col < columns; col++) 
+		if (currRow == 0 || currRow == rows - 1)
 		{
-			if (row == 0 || row == rows - 1) 
-			{ 
-				if (maze[row][col] != WALL) // Upper and lower wall check
-				{
-					res = false;
-				}
-			}
-			else if (col == 0 || col == columns - 1) // Side walls check
-			{ 
-				if ((row == 1 && col == 0)|| (row == rows - 2 && col == columns - 1))
-				{ 
-					if (maze[row][col] != FREE) // Entry and exit points
-					{
-						res = false;
-					}
-				}
-				else if (maze[row][col] != WALL)
-				{
-					res = false;
-				}
-			}
-			else if (maze[row][col] != WALL && maze[row][col] != FREE)
+			if (maze[currRow][col] != WALL) // Upper and lower wall check
 			{
-				res = false;
+				return false;
 			}
 		}
+		else if (col == 0 || col == columns - 1)
+		{
+			if ((currRow == 1 && col == 0) || (currRow == rows - 2 && col == columns - 1))
+			{
+				if (maze[currRow][col] != FREE) // Entry and exit points check
+				{
+					return false;
+				}
+			}
+			else if (maze[currRow][col] != WALL) // Side walls check
+			{
+				return false;
+			}
+		}
+		else if (maze[currRow][col] != WALL && maze[currRow][col] != FREE) // Characters check
+		{
+			return false;
+		}
 	}
-	return res;
+
+	return true;
 }
 
 
@@ -90,13 +71,14 @@ void Maze::setUserMaze()
 {
 	delete[] maze; // Free previous maze if exists
 
-	maze = new char*[rows]; // Allocate maze rows
+	maze = new char*[rows]; // Allocate all maze rows
 	cin.ignore();
 	for (int i = 0; i < rows; i++)
 	{
-		maze[i] = new char[columns + 1]; // Allocate each maze column
-		cin.getline(maze[i], columns + 1); 
-		if (!checkLine(maze[i], i))
+		maze[i] = new char[columns + 1]; // Allocate each maze row
+		cin.getline(maze[i], columns + 1); // Read row
+
+		if (!checkLine(maze[i], i)) // Input validation
 		{
 			freeAllocatedMaze(i); // Free the allocated rows before exit
 			cout << "invalid input" << endl;
@@ -115,15 +97,56 @@ void Maze::freeAllocatedMaze(int allocatedRows)
 	delete[] maze;
 }
 
-void Maze::setInitMaze()
+void Maze::setRandomMaze()
+{
+	// Both rows and columns have to be odd numbers different than 1 for valid random maze
+	// (because we initialize the stack with the vertex (1,1))
+	if (rows % 2 == 1 && columns % 2 == 1 && rows != 1 && columns != 1) 
+	{
+		initMaze();
+		createRandomMaze();
+	}
+	else
+	{
+		cout << "invalid input" << endl;
+		exit(INVALID_INPUT_ERROR);
+	}
+}
+
+void Maze::setRows(int rows)
+{
+	this->rows = rows;
+}
+
+void Maze::setColumns(int columns)
+{
+	this->columns = columns;
+}
+
+char** Maze::getMaze()
+{
+	return maze;
+}
+
+int Maze::getRows() const
+{
+	return rows;
+}
+
+int Maze::getColumns() const
+{
+	return columns;
+}
+
+void Maze::initMaze()
 {
 	int row, col;
 
-	maze = new char*[rows]; // Allocate maze rows
+	maze = new char*[rows]; // Allocate all maze rows
 
 	for (row = 0; row < rows; row++)
 	{
-		maze[row] = new char[columns + 1]; // Allocate each maze column
+		maze[row] = new char[columns + 1]; // Allocate each maze row
 
 		if (row % 2 == 0) // Even rows
 		{
@@ -154,36 +177,11 @@ void Maze::setInitMaze()
 	maze[rows - 2][columns - 1] = FREE;
 }
 
-void Maze::setRows(int rows)
-{
-	this->rows = rows;
-}
-
-void Maze::setColumns(int columns)
-{
-	this->columns = columns;
-}
-
-char** Maze::getMaze()
-{
-	return maze;
-}
-
-int Maze::getRows() const
-{
-	return rows;
-}
-
-int Maze::getColumns() const
-{
-	return columns;
-}
-
 void Maze::createRandomMaze()
 {
 	Stack stack;
-	Vertex vertex = Vertex(1, 1, FREE);
 	Vertex neighbor;
+	Vertex vertex(1, 1, FREE); // Starting vertex
 
 	stack.makeEmpty(); // Make empty stack
 	stack.push(vertex); // Initialize stack
@@ -275,8 +273,8 @@ void Maze::solveMaze()
 		visitedVertex = queue.dequeue();
 		int vertexX = visitedVertex.getX();
 		int vertexY = visitedVertex.getY();
-
 		maze[vertexX][vertexY] = PATH; // Mark as visited
+
 		if (maze[vertexX][vertexY] == maze[rows - 2][columns - 1]) // End point
 		{
 			isSolved = true; // Maze solved
@@ -296,11 +294,17 @@ void Maze::addAllAccessibleNeighbors(Vertex visitedVertex, Queue& queue)
 	getNeighbors(visitedVertex, neighbors, numOfNeighbors); // Get unvisited neighbors
 	for (int i = 0; i < numOfNeighbors; i++) // Enqueue unvisited neighbors
 	{
-		queue.enqueue(neighbors[i]);
+		// To avoid duplicates add to the queue only neighbors that not exist already
+		if (!isNeighborExists(queue, neighbors[i])) 
+		{
+			queue.enqueue(neighbors[i]);
+		}
 	}
 
 	if (numOfNeighbors == 0 && queue.isEmpty()) // No solution
 	{
+		freeAllocatedQueue(queue); // Free the queue before exit
+		freeAllocatedMaze(rows); // Free the maze before exit
 		cout << "no solution" << endl;
 		exit(NO_SOLUTION_ERROR);
 	}
@@ -375,38 +379,6 @@ void Maze::clearMaze()
 	}
 }
 
-bool Maze::checkLine(string line, int row)
-{
-	int col;
-	bool res = true;
-
-	if (line.length() != columns) {
-		res = false;
-	}
-	else {
-		for (col = 0; col < columns; col++) {
-			if (row == 0 || row == rows - 1) { // Upper & lower wall check.
-				if (maze[row][col] != WALL) {
-					res = false;
-				}
-			}
-			else if (col == 0 || col == columns - 1) { // Side walls check.
-				if (row == 1 || row == rows - 2) { //Entry and exit points.
-					if (maze[row][col] != FREE)
-						res = false;
-				}
-				else if (maze[row][col] != WALL) {
-					res = false;
-				}
-			}
-			else if (maze[row][col] != WALL || maze[row][col] != FREE) {
-				res = false;
-			}
-		}
-	}
-	return res;
-}
-
 bool Maze::checkNeighbors(Vertex vertex)
 {
 	int x = vertex.getX(), y = vertex.getY();
@@ -431,4 +403,27 @@ bool Maze::checkNeighbors(Vertex vertex)
 	{
 		return false;
 	}
+}
+
+void freeAllocatedQueue(Queue& queue)
+{
+	delete[] queue.data;
+}
+
+bool isNeighborExists(Queue& queue, Vertex& neighbor)
+{
+	bool isExists = false;
+
+	// Loop through the queue and check for duplicates
+	for (int i = 0; i < queue.numOfDataElements; i++)
+	{
+		Vertex vertex = queue.dequeue();
+		if (vertex.getX() == neighbor.getX() && vertex.getY() == neighbor.getY()) // Neighbor exists
+		{
+			isExists = true;
+		}
+		queue.enqueue(vertex);
+	}
+
+	return isExists;
 }
