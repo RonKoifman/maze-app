@@ -15,7 +15,7 @@ public:
 	~Stack(); // D'tor
 	void makeEmpty();
 	bool isEmpty();
-	void push(Vertex vertex);
+	void push(Vertex& vertex);
 	Vertex pop();
 	Vertex top();
 };

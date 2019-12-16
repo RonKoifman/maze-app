@@ -1,9 +1,9 @@
 #include "Queue.h"
 
-Queue::Queue(int size) // C'tor
-	: size(size)
+Queue::Queue(int phySize) // C'tor
+	: phySize(phySize)
 {
-	data = new Vertex[size];
+	data = new Vertex[phySize];
 	makeEmpty();
 }
 
@@ -16,7 +16,7 @@ void Queue::makeEmpty() // Make an empty queue
 {
 	head = 1;
 	tail = 0;
-	numOfDataElements = 0;
+	logSize = 0;
 }
 
 bool Queue::isEmpty() // Check if the queue is empty
@@ -34,7 +34,7 @@ Vertex Queue::front() // Return the data of the first item in the queue
 	return data[head];
 }
 
-void Queue::enqueue(Vertex vertex) // Add item to the end of the queue
+void Queue::enqueue(Vertex& vertex) // Add item to the end of the queue
 {
 	if (addOne(addOne(tail)) == head)
 	{
@@ -43,18 +43,18 @@ void Queue::enqueue(Vertex vertex) // Add item to the end of the queue
 	}
 	tail = addOne(tail);
 	data[tail] = vertex;
-	numOfDataElements++;
+	logSize++;
 }
 
 Vertex Queue::dequeue() // Remove first item in the queue and return it
 {
 	Vertex vertex = data[head];
 	head = addOne(head);
-	numOfDataElements--;
+	logSize--;
 	return vertex;
 }
 
 int Queue::addOne(int index) // Add one to index in a cyclic way
 {
-	return (1 + index) % size;
+	return (1 + index) % phySize;
 }

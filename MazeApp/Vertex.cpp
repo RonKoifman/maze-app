@@ -1,10 +1,5 @@
 #include "Vertex.h"
 
-Vertex::Vertex() // Default C'tor
-	: x(0), y(0), data('\0')
-{
-}
-
 Vertex::Vertex(int x, int y, char data) // C'tor
 	: x(x), y(y), data(data) 
 {

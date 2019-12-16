@@ -11,7 +11,7 @@ private:
 	char data;
 
 public:
-	Vertex(); // Default C'tor
+	Vertex() = default; // Default C'tor
 	Vertex(int x, int y, char data); // C'tor
 	// Setters
 	void setX(int x);

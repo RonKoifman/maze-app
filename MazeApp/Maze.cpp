@@ -123,7 +123,7 @@ void Maze::setColumns(int columns)
 	this->columns = columns;
 }
 
-char** Maze::getMaze()
+char** Maze::getMaze() const
 {
 	return maze;
 }
@@ -180,20 +180,22 @@ void Maze::initMaze()
 void Maze::createRandomMaze()
 {
 	Stack stack;
-	Vertex neighbor;
+	Vertex neighbor, neighbors[MAX_NEIGHBORS];
+	int numOfNeighbors;
 	Vertex vertex(1, 1, FREE); // Starting vertex
 
 	stack.makeEmpty(); // Make empty stack
 	stack.push(vertex); // Initialize stack
 	while (!stack.isEmpty())
 	{
+		numOfNeighbors = 0; // Initialize number of unvisited neighbors
 		vertex = stack.pop(); // Pop the first element
-		maze[vertex.getX()][vertex.getY()] = PATH; // Mark visited vertices in maze
-		vertex.setData(PATH); // Update vertex as visited
-		
-		if (checkNeighbors(vertex)) // Check for vertex neighbors
+		maze[vertex.getX()][vertex.getY()] = PATH; // Mark visited vertex in the maze
+		getNeighbors(vertex, 2, neighbors, numOfNeighbors); // Check for vertex unvisited neighbors
+
+		if (numOfNeighbors > 0) // At least one unvisited neighbor
 		{
-			neighbor = getRandomNeighbor(vertex);
+			neighbor = getRandomNeighbor(neighbors, numOfNeighbors);
 			removeWall(vertex, neighbor);
 			stack.push(vertex);
 			stack.push(neighbor);
@@ -203,60 +205,11 @@ void Maze::createRandomMaze()
 	clearMaze();
 }
 
-Vertex Maze::getRandomNeighbor(Vertex vertex)
+Vertex Maze::getRandomNeighbor(Vertex neighbors[], int numOfNeighbors)
 {
-	Vertex neighbor;
-	int x = vertex.getX(), y = vertex.getY();
+	int index = rand() % numOfNeighbors;
 
-	while (neighbor.getData() == '\0')
-	{
-		int direction = rand() % MAX_NEIGHBORS;
-
-		switch ((Direction)direction)
-		{
-		case RIGHT:
-		{
-			if (y != (columns - 2) && maze[x][y + 2] == FREE) // Right neighbor
-			{
-				neighbor.setX(x);
-				neighbor.setY(y + 2);
-				neighbor.setData(FREE);
-			}
-			break;
-		}
-		case DOWN:
-		{
-			if (x != (rows - 2) && maze[x + 2][y] == FREE) // Bottom Neighbor
-			{
-				neighbor.setX(x + 2);
-				neighbor.setY(y);
-				neighbor.setData(FREE);
-			}
-			break;
-		}
-		case LEFT:
-		{
-			if (y != 1 && maze[x][y - 2] == FREE) // Left neighbor
-			{
-				neighbor.setX(x);
-				neighbor.setY(y - 2);
-				neighbor.setData(FREE);
-			}
-		}
-		case UP:
-		{
-			if (x != 1 && maze[x - 2][y] == FREE) // Up neighbor
-			{
-				neighbor.setX(x - 2);
-				neighbor.setY(y);
-				neighbor.setData(FREE);
-			}
-			break;
-		}
-		}
-	}
-
-	return neighbor;
+	return neighbors[index]; // Random neighbor
 }
 
 void Maze::solveMaze()
@@ -286,15 +239,17 @@ void Maze::solveMaze()
 	}
 }
 
-void Maze::addAllAccessibleNeighbors(Vertex visitedVertex, Queue& queue)
+void Maze::addAllAccessibleNeighbors(Vertex &visitedVertex, Queue& queue)
 {
 	Vertex neighbors[MAX_NEIGHBORS];
 	int numOfNeighbors = 0;
 
-	getNeighbors(visitedVertex, neighbors, numOfNeighbors); // Get unvisited neighbors
+	getNeighbors(visitedVertex, 1, neighbors, numOfNeighbors); // Get unvisited neighbors
 	for (int i = 0; i < numOfNeighbors; i++) // Enqueue unvisited neighbors
 	{
 		// To avoid duplicates add to the queue only neighbors that not exist already
+		// Note: Of course, this check is not so efficient but it is inevitable in an extreme case when the user inserts
+		// a large array with only walls around which causes the queue to reach its full capacity because of duplicates
 		if (!isNeighborExists(queue, neighbors[i])) 
 		{
 			queue.enqueue(neighbors[i]);
@@ -310,28 +265,28 @@ void Maze::addAllAccessibleNeighbors(Vertex visitedVertex, Queue& queue)
 	}
 }
 
-void Maze::getNeighbors(Vertex visitedVertex, Vertex neighbors[], int &numOfNeighbors)
+void Maze::getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int &numOfNeighbors)
 {
 	int x = visitedVertex.getX(), y = visitedVertex.getY();
 
-	if (y != (columns - 1) && maze[x][y + 1] == FREE) // Check for right neighbor
+	if (y != (columns - neighborDistance) && maze[x][y + neighborDistance] == FREE) // Check for right neighbor
 	{
-		Vertex rightNeighbor(x, y + 1, maze[x][y + 1]);
+		Vertex rightNeighbor(x, y + neighborDistance, maze[x][y + neighborDistance]);
 		neighbors[numOfNeighbors++] = rightNeighbor;
 	}
-	if (x != (rows - 1) && maze[x + 1][y] == FREE) // Check for bottom neighbor
+	if (x != (rows - neighborDistance) && maze[x + neighborDistance][y] == FREE) // Check for bottom neighbor
 	{
-		Vertex bottomNeighbor(x + 1, y, maze[x + 1][y]);
+		Vertex bottomNeighbor(x + neighborDistance, y, maze[x + neighborDistance][y]);
 		neighbors[numOfNeighbors++] = bottomNeighbor;
 	}
-	if (y != 1 && maze[x][y - 1] == FREE) // Check for left neighbor
+	if (y != 1 && maze[x][y - neighborDistance] == FREE) // Check for left neighbor
 	{
-		Vertex leftNeighbor(x, y - 1, maze[x][y - 1]);
+		Vertex leftNeighbor(x, y - neighborDistance, maze[x][y - neighborDistance]);
 		neighbors[numOfNeighbors++] = leftNeighbor;
 	}
-	if (x != 1 && maze[x - 1][y] == FREE) // Check for up neighbor
+	if (x != 1 && maze[x - neighborDistance][y] == FREE) // Check for up neighbor
 	{
-		Vertex upNeighbor(x - 1, y, maze[x - 1][y]);
+		Vertex upNeighbor(x - neighborDistance, y, maze[x - neighborDistance][y]);
 		neighbors[numOfNeighbors++] = upNeighbor;
 	}
 }
@@ -379,32 +334,6 @@ void Maze::clearMaze()
 	}
 }
 
-bool Maze::checkNeighbors(Vertex vertex)
-{
-	int x = vertex.getX(), y = vertex.getY();
-
-	if (y != (columns - 2) && maze[x][y + 2] == FREE) // Check for right neighbor
-	{
-		return true;
-	}
-	else if (x != (rows - 2) && maze[x + 2][y] == FREE) // Check for bottom neighbor
-	{
-		return true;
-	}
-	else if (y != 1 && maze[x][y - 2] == FREE) // Check for left neighbor
-	{
-		return true;
-	}
-	else if (x != 1 && maze[x - 2][y] == FREE) // Check for up neighbor
-	{
-		return true;
-	}
-	else // No neighbors found
-	{
-		return false;
-	}
-}
-
 void freeAllocatedQueue(Queue& queue)
 {
 	delete[] queue.data;
@@ -414,15 +343,15 @@ bool isNeighborExists(Queue& queue, Vertex& neighbor)
 {
 	bool isExists = false;
 
-	// Loop through the queue and check for duplicates
-	for (int i = 0; i < queue.numOfDataElements; i++)
+	// Loop through the queue and check if neighbor exists
+	for (int i = 0; i < queue.logSize; i++)
 	{
 		Vertex vertex = queue.dequeue();
 		if (vertex.getX() == neighbor.getX() && vertex.getY() == neighbor.getY()) // Neighbor exists
 		{
 			isExists = true;
 		}
-		queue.enqueue(vertex);
+		queue.enqueue(vertex); // Need to enqueue back all queue elements to retain the order
 	}
 
 	return isExists;

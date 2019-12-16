@@ -5,7 +5,7 @@ Node::Node() // C'tor
 {
 }
 
-Node::Node(Vertex vertex, Node* next) // Copy C'tor
+Node::Node(Vertex& vertex, Node* next) // Copy C'tor
 	: vertex(vertex), next(next)
 {
 }
@@ -28,7 +28,7 @@ Node* Node::deleteAfter()
 	return temp;
 }
 
-void Node::setVertex(Vertex vertex)
+void Node::setVertex(Vertex& vertex)
 {
 	this->vertex = vertex;
 }
