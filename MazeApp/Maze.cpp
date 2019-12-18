@@ -234,7 +234,7 @@ void Maze::solveMaze()
 		}
 		else
 		{
-			addAllAccessibleNeighbors(visitedVertex, queue); // Add the accassible neighbors that were not visited
+			addAllAccessibleNeighbors(visitedVertex, queue); // Add the accessible neighbors that were not visited
 		}
 	}
 }
