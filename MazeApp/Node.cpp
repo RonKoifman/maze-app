@@ -10,13 +10,13 @@ Node::Node(Vertex& vertex, Node* next) // Copy C'tor
 {
 }
 
-void Node::insertAfter(Node* newNode)
+void Node::insertAfter(Node* newNode) // Insert new node after current node
 {
 	newNode->next = next;
 	next = newNode;
 }
 
-Node* Node::deleteAfter()
+Node* Node::deleteAfter() // Delete node after current node
 {
 	Node* temp = next;
 	if (next == nullptr) // End of the list
