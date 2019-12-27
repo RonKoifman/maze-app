@@ -1,9 +1,9 @@
 #include "Queue.h"
 
-Queue::Queue(int phySize) // C'tor
-	: phySize(phySize)
+Queue::Queue(int maxSize) // C'tor
+	: maxSize(maxSize)
 {
-	data = new Vertex[phySize];
+	data = new Vertex[maxSize];
 	makeEmpty();
 }
 
@@ -16,7 +16,7 @@ void Queue::makeEmpty() // Make an empty queue
 {
 	head = 1;
 	tail = 0;
-	logSize = 0;
+	currSize = 0;
 }
 
 bool Queue::isEmpty() // Check if the queue is empty
@@ -34,27 +34,29 @@ Vertex Queue::front() // Return the data of the first item in the queue
 	return data[head];
 }
 
-void Queue::enqueue(Vertex& vertex) // Add item to the end of the queue
+void Queue::enqueue(const Vertex& vertex) // Add item to the end of the queue
 {
 	if (addOne(addOne(tail)) == head)
 	{
 		cout << "Error: queue is full!" << endl;
 		exit(FULL_QUE_ERROR);
 	}
+
 	tail = addOne(tail);
 	data[tail] = vertex;
-	logSize++;
+	currSize++;
 }
 
 Vertex Queue::dequeue() // Remove first item in the queue and return it
 {
 	Vertex vertex = data[head];
 	head = addOne(head);
-	logSize--;
+	currSize--;
+
 	return vertex;
 }
 
 int Queue::addOne(int index) // Add one to index in a cyclic way
 {
-	return (1 + index) % phySize;
+	return (1 + index) % maxSize;
 }

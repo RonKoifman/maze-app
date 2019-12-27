@@ -1,7 +1,7 @@
 #include "Maze.h"
 
 Maze::Maze(int rows, int columns) // C'tor
-	:maze(nullptr), rows(rows), columns(columns)
+	: maze(nullptr), rows(rows), columns(columns)
 {
 }
 
@@ -69,8 +69,6 @@ bool Maze::checkLine(char* line, int currRow)
 
 void Maze::setUserMaze()
 {
-	delete[] maze; // Free previous maze if exists
-
 	maze = new char*[rows]; // Allocate all maze rows
 	cin.ignore();
 	for (int i = 0; i < rows; i++)
@@ -212,7 +210,7 @@ Vertex Maze::getRandomNeighbor(Vertex neighbors[], int numOfNeighbors)
 	return neighbors[index]; // Random neighbor
 }
 
-void Maze::solveMaze()
+void Maze::solve()
 {
 	Queue queue(rows * columns);
 	Vertex startVertex(1, 0, maze[1][0]); // Starting vertex
@@ -265,7 +263,7 @@ void Maze::addAllAccessibleNeighbors(Vertex &visitedVertex, Queue& queue)
 	}
 }
 
-void Maze::getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int &numOfNeighbors)
+void Maze::getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int& numOfNeighbors)
 {
 	int x = visitedVertex.getX(), y = visitedVertex.getY();
 
@@ -344,7 +342,7 @@ bool isNeighborExists(Queue& queue, Vertex& neighbor)
 	bool isExists = false;
 
 	// Loop through the queue and check if neighbor exists
-	for (int i = 0; i < queue.logSize; i++)
+	for (int i = 0; i < queue.currSize; i++)
 	{
 		Vertex vertex = queue.dequeue();
 		if (vertex.getX() == neighbor.getX() && vertex.getY() == neighbor.getY()) // Neighbor exists

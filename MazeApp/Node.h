@@ -11,15 +11,15 @@ public:
 	Node* next;
 
 	Node(); // C'tor
-	Node(Vertex& vertex, Node* next = nullptr); // Copy C'tor
+	Node(const Vertex& vertex, Node* next = nullptr); // Copy C'tor
 	Node(Node& other) = delete; // Disable default copy c'tor
 	void insertAfter(Node* node);
 	Node* deleteAfter();
 	// Setters
-	void setVertex(Vertex& vertex);
+	void setVertex(const Vertex& vertex);
 	// Getters
-	Vertex getVertex();
-	Node* getNext();
+	Vertex getVertex() const;
+	Node* getNext() const;
 };
 
 #endif // __NODE_H

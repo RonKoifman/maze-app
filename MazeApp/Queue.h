@@ -10,17 +10,17 @@ private:
 	int head;
 	int tail;
 	Vertex* data;
-	int logSize;
-	int phySize;
+	int currSize;
+	int maxSize;
 
 public:
-	Queue(int phySize); // C'tor
+	Queue(int maxSize); // C'tor
 	Queue(Queue& other) = delete; // Disable copy c'tor
 	~Queue(); // D'tor
 	void makeEmpty();
 	bool isEmpty();
 	Vertex front();
-	void enqueue(Vertex& vertex);
+	void enqueue(const Vertex& vertex);
 	Vertex dequeue();
 	// Friend functions
 	friend void freeAllocatedQueue(Queue& queue);

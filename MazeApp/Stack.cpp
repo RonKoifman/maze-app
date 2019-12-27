@@ -26,7 +26,7 @@ bool Stack::isEmpty() // Check if stack is empty
 	return (topOfStack == nullptr);
 }
 
-void Stack::push(Vertex& vertex) // Push item into the stack
+void Stack::push(const Vertex& vertex) // Push item into the stack
 {
 	topOfStack = new Node(vertex, topOfStack);
 }

@@ -19,7 +19,7 @@ public:
 	Maze(Maze& other) = delete; // Disable copy c'tor
 	~Maze(); // D'tor
 	void show();
-	void solveMaze();
+	void solve();
 	// Setters
 	void setUserMaze();
 	void setRandomMaze();
@@ -34,7 +34,7 @@ private:
 	// Private functions
 	void initMaze();
 	void createRandomMaze();
-	void getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int &numOfNeighbors);
+	void getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int& numOfNeighbors);
 	Vertex getRandomNeighbor(Vertex neighbors[], int numOfNeighbors);
 	void addAllAccessibleNeighbors(Vertex& visitedVertex, Queue& queue);
 	void removeWall(Vertex& vertex, Vertex& neighbor);

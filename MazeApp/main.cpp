@@ -36,6 +36,6 @@ int main()
 		maze.setRandomMaze();
 	}
 
-	maze.solveMaze(); // Solve the resulting maze
+	maze.solve(); // Solve the resulting maze
 	maze.show(); // Print solved maze
 }
