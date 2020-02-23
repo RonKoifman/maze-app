@@ -261,7 +261,7 @@ void Maze::addAllAccessibleNeighbors(Vertex& visitedVertex, Queue& queue)
 	{
 		freeAllocatedQueue(queue); // Free the queue before exit
 		freeAllocatedMaze(rows); // Free the maze before exit
-		cout << "no solution" << endl;
+		cout << endl << "No solution!" << endl;
 		exit(NO_SOLUTION_ERROR);
 	}
 }
