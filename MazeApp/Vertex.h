@@ -1,7 +1,7 @@
 #ifndef __VERTEX_H
 #define __VERTEX_H
 
-#include "OutResources.h"
+#include "Utils.h"
 
 class Vertex 
 {

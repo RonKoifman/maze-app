@@ -1,5 +1,5 @@
-#ifndef __OUT_RESOURCES_H
-#define __OUT_RESOURCES_H
+#ifndef __UTILS_H
+#define __UTILS_H
 
 #pragma warning(disable: 4996)
 #pragma warning(disable: 26451)
@@ -30,4 +30,4 @@ enum ErrorType
 	EMPTY_STACK_ERROR = 5
 };
 
-#endif // __OUT_RESOURCES_H
+#endif // __UTILS_H
