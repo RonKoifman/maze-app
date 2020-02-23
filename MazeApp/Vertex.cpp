@@ -1,6 +1,6 @@
 #include "Vertex.h"
 
-Vertex::Vertex(int x, int y, char data) // C'tor
+Vertex::Vertex(int x, int y, char data)
 	: x(x), y(y), data(data) 
 {
 }

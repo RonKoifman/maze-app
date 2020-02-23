@@ -1,7 +1,9 @@
 #ifndef __OUT_RESOURCES_H
 #define __OUT_RESOURCES_H
 
-#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable: 4996)
+#pragma warning(disable: 26451)
+#pragma warning(disable: 6386)
 
 #include <iostream>
 #include <string.h>
@@ -18,8 +20,8 @@ const char FREE = ' ';
 const char WALL = '*';
 const char PATH = '$';
 
-// enums declaration
-enum Error
+// Enums declaration
+enum ErrorType
 {
 	INVALID_INPUT_ERROR = 1,
 	NO_SOLUTION_ERROR = 2,

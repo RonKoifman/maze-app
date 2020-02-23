@@ -1,23 +1,23 @@
 #ifndef __STACK_H
 #define __STACK_H
 
-#include "OutResources.h"
 #include "Node.h"
 
+// Implementation of stack as a linked list with pointers
 class Stack
 {
 private:
-	Node* topOfStack;
+	Node* topOfStack; // Pointer node to the top of the stack
 
 public:
 	Stack(); // C'tor
-	Stack(Stack& other) = delete; // Disable copy c'tor
+	Stack(const Stack& other) = delete; // Disable copy c'tor
 	~Stack(); // D'tor
 	void makeEmpty();
-	bool isEmpty();
-	void push(Vertex& vertex);
+	bool isEmpty() const;
+	void push(const Vertex& item);
 	Vertex pop();
-	Vertex top();
+	const Vertex& top() const;
 };
 
 #endif // __STACK_H

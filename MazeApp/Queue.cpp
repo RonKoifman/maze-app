@@ -1,9 +1,9 @@
 #include "Queue.h"
 
-Queue::Queue(int phySize) // C'tor
-	: phySize(phySize)
+Queue::Queue(int maxSize) // C'tor
+	: maxSize(maxSize)
 {
-	data = new Vertex[phySize];
+	data = new Vertex[maxSize];
 	makeEmpty();
 }
 
@@ -12,49 +12,69 @@ Queue::~Queue() // D'tor
 	delete[] data;
 }
 
-void Queue::makeEmpty() // Make an empty queue
+// Make an empty queue
+void Queue::makeEmpty()
 {
 	head = 1;
 	tail = 0;
-	logSize = 0;
+	currSize = 0;
 }
 
-bool Queue::isEmpty() // Check if the queue is empty
+// Check if queue is empty
+bool Queue::isEmpty() const
 {
 	return (addOne(tail) == head);
 }
 
-Vertex Queue::front() // Return the data of the first item in the queue
+// Return the data of the first item in queue
+const Vertex& Queue::front() const
 {
 	if (isEmpty())
 	{
-		cout << "Error: queue is empty!" << endl;
+		cout << "Error: Queue is empty!" << endl;
 		exit(EMPTY_QUE_ERROR);
 	}
+
 	return data[head];
 }
 
-void Queue::enqueue(Vertex& vertex) // Add item to the end of the queue
+// Add item to the end of queue
+void Queue::enqueue(const Vertex& item)
 {
 	if (addOne(addOne(tail)) == head)
 	{
-		cout << "Error: queue is full!" << endl;
+		cout << "Error: Queue is full!" << endl;
 		exit(FULL_QUE_ERROR);
 	}
+
 	tail = addOne(tail);
-	data[tail] = vertex;
-	logSize++;
+	data[tail] = item;
+	currSize++;
 }
 
-Vertex Queue::dequeue() // Remove first item in the queue and return it
+// Remove first item in queue and return it
+Vertex Queue::dequeue()
 {
-	Vertex vertex = data[head];
+	Vertex item = data[head];
+
 	head = addOne(head);
-	logSize--;
-	return vertex;
+	currSize--;
+
+	return item;
 }
 
-int Queue::addOne(int index) // Add one to index in a cyclic way
+// Add one to index in a cyclic way
+int Queue::addOne(int index) const
 {
-	return (1 + index) % phySize;
+	return (1 + index) % maxSize;
+}
+
+int Queue::getCurrSize() const
+{
+	return currSize;
+}
+
+void Queue::freeAllocatedData()
+{
+	delete[] data;
 }

@@ -1,44 +1,47 @@
 #include "Node.h"
 
-Node::Node() // C'tor
-	: next(nullptr)
+Node::Node() // Default C'tor
+	: data(), next(nullptr)
 {
 }
 
-Node::Node(Vertex& vertex, Node* next) // Copy C'tor
-	: vertex(vertex), next(next)
+Node::Node(const Vertex& data, Node* next) // C'tor
+	: data(data), next(next)
 {
 }
 
+// Insert new node after current node
 void Node::insertAfter(Node* newNode)
 {
-	newNode->next = next;
-	next = newNode;
+	newNode->next = this->next;
+	this->next = newNode;
 }
 
+// Delete node after current node
 Node* Node::deleteAfter()
 {
-	Node* temp = next;
-	if (next == nullptr) // End of the list
+	Node* temp = this->next;
+
+	if (this->next == nullptr) // End of the list
 	{
 		return nullptr;
 	}
 
-	next = temp->next;
+	this->next = temp->next;
 	return temp;
 }
 
-void Node::setVertex(Vertex& vertex)
+void Node::setData(const Vertex& data)
 {
-	this->vertex = vertex;
+	this->data = data;
 }
 
-Vertex Node::getVertex()
+const Vertex& Node::getData() const
 {
-	return vertex;
+	return data;
 }
 
-Node* Node::getNext()
+Node* Node::getNext() const
 {
 	return next;
 }

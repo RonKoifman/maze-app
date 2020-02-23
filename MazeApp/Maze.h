@@ -1,7 +1,6 @@
 #ifndef __MAZE_H
 #define __MAZE_H
 
-#include "OutResources.h"
 #include "Stack.h"
 #include "Queue.h"
 
@@ -18,8 +17,8 @@ public:
 	Maze(int rows, int columns); // C'tor
 	Maze(Maze& other) = delete; // Disable copy c'tor
 	~Maze(); // D'tor
-	void show();
-	void solveMaze();
+	void show() const;
+	void solve();
 	// Setters
 	void setUserMaze();
 	void setRandomMaze();
@@ -30,12 +29,14 @@ public:
 	int getRows() const;
 	int getColumns() const;
 
+// Private functions
 private:
-	// Private functions
 	void initMaze();
 	void createRandomMaze();
-	void getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int &numOfNeighbors);
-	Vertex getRandomNeighbor(Vertex neighbors[], int numOfNeighbors);
+	void getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int& numOfNeighbors) const;
+	bool isNeighborExists(Queue& queue, Vertex& neighbor) const;
+	void freeAllocatedQueue(Queue& queue);
+	const Vertex& getRandomNeighbor(Vertex neighbors[], int numOfNeighbors) const;
 	void addAllAccessibleNeighbors(Vertex& visitedVertex, Queue& queue);
 	void removeWall(Vertex& vertex, Vertex& neighbor);
 	void clearMaze();

@@ -1,7 +1,7 @@
 #include "Maze.h"
 
 Maze::Maze(int rows, int columns) // C'tor
-	:maze(nullptr), rows(rows), columns(columns)
+	: maze(nullptr), rows(rows), columns(columns)
 {
 }
 
@@ -15,8 +15,10 @@ Maze::~Maze() // D'tor
 	delete[] maze;
 }
 
-void Maze::show()
+void Maze::show() const
 {
+	cout << endl << "The solved maze:\n" << endl;
+
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < columns; j++)
@@ -66,13 +68,12 @@ bool Maze::checkLine(char* line, int currRow)
 	return true;
 }
 
-
 void Maze::setUserMaze()
 {
-	delete[] maze; // Free previous maze if exists
-
 	maze = new char*[rows]; // Allocate all maze rows
 	cin.ignore();
+
+	cout << endl << "Please enter your maze:\n" << endl;
 	for (int i = 0; i < rows; i++)
 	{
 		maze[i] = new char[columns + 1]; // Allocate each maze row
@@ -81,7 +82,7 @@ void Maze::setUserMaze()
 		if (!checkLine(maze[i], i)) // Input validation
 		{
 			freeAllocatedMaze(i); // Free the allocated rows before exit
-			cout << "invalid input" << endl;
+			cout << endl << "Invalid input!" << endl;
 			exit(INVALID_INPUT_ERROR);
 		}
 	}
@@ -99,8 +100,8 @@ void Maze::freeAllocatedMaze(int allocatedRows)
 
 void Maze::setRandomMaze()
 {
-	// Both rows and columns have to be odd numbers different than 1 for valid random maze
-	// (because we initialize the stack with the vertex (1,1))
+	// Both rows and columns have to be odd numbers, different than 1, for valid random maze.
+	// (Because we initialize the stack with the vertex (1,1))
 	if (rows % 2 == 1 && columns % 2 == 1 && rows != 1 && columns != 1) 
 	{
 		initMaze();
@@ -108,7 +109,7 @@ void Maze::setRandomMaze()
 	}
 	else
 	{
-		cout << "invalid input" << endl;
+		cout << endl << "Invalid input!" << endl;
 		exit(INVALID_INPUT_ERROR);
 	}
 }
@@ -184,7 +185,7 @@ void Maze::createRandomMaze()
 	int numOfNeighbors;
 	Vertex vertex(1, 1, FREE); // Starting vertex
 
-	stack.makeEmpty(); // Make empty stack
+	stack.makeEmpty(); // Make an empty stack
 	stack.push(vertex); // Initialize stack
 	while (!stack.isEmpty())
 	{
@@ -205,16 +206,16 @@ void Maze::createRandomMaze()
 	clearMaze();
 }
 
-Vertex Maze::getRandomNeighbor(Vertex neighbors[], int numOfNeighbors)
+const Vertex& Maze::getRandomNeighbor(Vertex neighbors[], int numOfNeighbors) const
 {
 	int index = rand() % numOfNeighbors;
 
 	return neighbors[index]; // Random neighbor
 }
 
-void Maze::solveMaze()
+void Maze::solve()
 {
-	Queue queue(rows * columns);
+	Queue queue(rows * columns); // Create queue
 	Vertex startVertex(1, 0, maze[1][0]); // Starting vertex
 	Vertex visitedVertex;
 	bool isSolved = false;
@@ -239,7 +240,7 @@ void Maze::solveMaze()
 	}
 }
 
-void Maze::addAllAccessibleNeighbors(Vertex &visitedVertex, Queue& queue)
+void Maze::addAllAccessibleNeighbors(Vertex& visitedVertex, Queue& queue)
 {
 	Vertex neighbors[MAX_NEIGHBORS];
 	int numOfNeighbors = 0;
@@ -247,7 +248,7 @@ void Maze::addAllAccessibleNeighbors(Vertex &visitedVertex, Queue& queue)
 	getNeighbors(visitedVertex, 1, neighbors, numOfNeighbors); // Get unvisited neighbors
 	for (int i = 0; i < numOfNeighbors; i++) // Enqueue unvisited neighbors
 	{
-		// To avoid duplicates add to the queue only neighbors that not exist already
+		// To avoid duplicates add to the queue only neighbors that not exist already.
 		// Note: Of course, this check is not so efficient but it is inevitable in an extreme case when the user inserts
 		// a large array with only walls around which causes the queue to reach its full capacity because of duplicates
 		if (!isNeighborExists(queue, neighbors[i])) 
@@ -265,7 +266,7 @@ void Maze::addAllAccessibleNeighbors(Vertex &visitedVertex, Queue& queue)
 	}
 }
 
-void Maze::getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int &numOfNeighbors)
+void Maze::getNeighbors(Vertex& visitedVertex, const int neighborDistance, Vertex neighbors[], int& numOfNeighbors) const
 {
 	int x = visitedVertex.getX(), y = visitedVertex.getY();
 
@@ -334,17 +335,18 @@ void Maze::clearMaze()
 	}
 }
 
-void freeAllocatedQueue(Queue& queue)
+void Maze::freeAllocatedQueue(Queue& queue)
 {
-	delete[] queue.data;
+	queue.freeAllocatedData();
 }
 
-bool isNeighborExists(Queue& queue, Vertex& neighbor)
+bool Maze::isNeighborExists(Queue& queue, Vertex& neighbor) const
 {
 	bool isExists = false;
+	int queueSize = queue.getCurrSize();
 
 	// Loop through the queue and check if neighbor exists
-	for (int i = 0; i < queue.logSize; i++)
+	for (int i = 0; i < queueSize; i++)
 	{
 		Vertex vertex = queue.dequeue();
 		if (vertex.getX() == neighbor.getX() && vertex.getY() == neighbor.getY()) // Neighbor exists

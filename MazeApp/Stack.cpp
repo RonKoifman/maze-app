@@ -10,9 +10,11 @@ Stack::~Stack() // D'tor
 	makeEmpty();
 }
 
-void Stack::makeEmpty() // Make an empty stack
+// Make an empty stack
+void Stack::makeEmpty()
 {
 	Node* temp;
+
 	while (topOfStack != nullptr)
 	{
 		temp = topOfStack;
@@ -21,32 +23,43 @@ void Stack::makeEmpty() // Make an empty stack
 	}
 }
 
-bool Stack::isEmpty() // Check if stack is empty
+// Check if stack is empty
+bool Stack::isEmpty() const
 {
 	return (topOfStack == nullptr);
 }
 
-void Stack::push(Vertex& vertex) // Push item into the stack
+// Push item into the stack
+void Stack::push(const Vertex& item)
 {
-	topOfStack = new Node(vertex, topOfStack);
+	topOfStack = new Node(item, topOfStack);
 }
 
-Vertex Stack::pop() // Pop top item and return it
+// Pop top item and return it
+Vertex Stack::pop()
 {
 	if (isEmpty()) 
 	{
-		cout << "Error: stack is empty!" << endl;
+		cout << "Error: Stack is empty!" << endl;
 		exit(EMPTY_STACK_ERROR);
 	}
+
 	Node* temp = topOfStack;
-	Vertex vertex = topOfStack->getVertex();
+	Vertex data = topOfStack->getData();
 	topOfStack = topOfStack->next;
 
 	delete temp;
-	return vertex;
+	return data;
 }
 
-Vertex Stack::top() // Return the data of the top item in the stack
+// Return the data of the top item in the stack
+const Vertex& Stack::top() const
 {
-	return topOfStack->getVertex();
+	if (isEmpty())
+	{
+		cout << "Error: Stack is empty!" << endl;
+		exit(EMPTY_STACK_ERROR);
+	}
+
+	return topOfStack->getData();
 }

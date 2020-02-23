@@ -1,33 +1,33 @@
 #ifndef __QUEUE_H
 #define __QUEUE_H
 
-#include "OutResources.h"
 #include "Vertex.h"
 
+// Implementation of queue as a cyclic array
 class Queue
 {
 private:
-	int head;
-	int tail;
-	Vertex* data;
-	int logSize;
-	int phySize;
+	int head; // Beginning of queue
+	int tail; // End of queue
+	Vertex* data; // Data array
+	int currSize; // Current size of queue
+	int maxSize; // Maximum capacity of queue
 
 public:
-	Queue(int phySize); // C'tor
-	Queue(Queue& other) = delete; // Disable copy c'tor
+	Queue(int maxSize); // C'tor
+	Queue(const Queue& other) = delete; // Disable copy c'tor
 	~Queue(); // D'tor
 	void makeEmpty();
-	bool isEmpty();
-	Vertex front();
-	void enqueue(Vertex& vertex);
+	bool isEmpty() const;
+	const Vertex& front() const;
+	void enqueue(const Vertex& item);
 	Vertex dequeue();
-	// Friend functions
-	friend void freeAllocatedQueue(Queue& queue);
-	friend bool isNeighborExists(Queue& queue, Vertex& neighbor);
+	int getCurrSize() const;
+	void freeAllocatedData();
 
+// Private functions
 private:
-	int addOne(int index);
+	int addOne(int index) const;
 };
 
 #endif // __QUEUE_H

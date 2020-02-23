@@ -1,25 +1,24 @@
 #ifndef __NODE_H
 #define __NODE_H
 
-#include "OutResources.h"
 #include "Vertex.h"
 
 class Node 
 {
 public:
-	Vertex vertex;
+	Vertex data;
 	Node* next;
 
-	Node(); // C'tor
-	Node(Vertex& vertex, Node* next = nullptr); // Copy C'tor
-	Node(Node& other) = delete; // Disable default copy c'tor
+	Node(); // Default C'tor
+	Node(const Vertex& data, Node* next = nullptr); // C'tor
+	Node(const Node& other) = delete; // Disable copy c'tor
 	void insertAfter(Node* node);
 	Node* deleteAfter();
 	// Setters
-	void setVertex(Vertex& vertex);
+	void setData(const Vertex& data);
 	// Getters
-	Vertex getVertex();
-	Node* getNext();
+	const Vertex& getData() const;
+	Node* getNext() const;
 };
 
 #endif // __NODE_H
