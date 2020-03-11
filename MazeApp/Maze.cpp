@@ -1,7 +1,7 @@
 #include "Maze.h"
 
-Maze::Maze(int rows, int columns) // C'tor
-	: maze(nullptr), rows(rows), columns(columns)
+Maze::Maze() // C'tor
+	: maze(nullptr), rows(0), columns(0)
 {
 }
 
@@ -13,6 +13,40 @@ Maze::~Maze() // D'tor
 	}
 
 	delete[] maze;
+}
+
+void Maze::runProgram()
+{
+	int selection, rows, columns;
+
+	cout << "Welcome to the maze app!\n" << endl;
+	cout << "Press 1 to enter your own maze.\n";
+	cout << "Press 2 to create a random maze.\n";
+	cout << "Your selection: ";
+	cin >> selection;
+	if (selection != RANDOM && selection != FROM_INPUT)
+	{
+		cout << endl << "Invalid input!" << endl;
+		exit(INVALID_INPUT_ERROR);
+	}
+
+	cout << endl << "Please enter the number of rows (25 max): ";
+	cin >> rows;
+	cout << "Please enter the number of columns (80 max): ";
+	cin >> columns;
+	setRowsAndColumns(rows, columns);
+
+	if (selection == FROM_INPUT) // Set maze from input
+	{
+		setUserMaze();
+	}
+	else if (selection == RANDOM) // Set random maze
+	{
+		setRandomMaze();
+	}
+
+	solve(); // Solve the resulting maze
+	show(); // Print solved maze
 }
 
 void Maze::show() const
@@ -114,13 +148,16 @@ void Maze::setRandomMaze()
 	}
 }
 
-void Maze::setRows(int rows)
+void Maze::setRowsAndColumns(int rows, int columns)
 {
-	this->rows = rows;
-}
+	// Invalid number of rows or columns
+	if (!(1 <= rows && rows <= MAX_ROWS) || !(1 <= columns && columns <= MAX_COLUMNS))
+	{
+		cout << endl << "Invalid input!" << endl;
+		exit(INVALID_INPUT_ERROR);
+	}
 
-void Maze::setColumns(int columns)
-{
+	this->rows = rows;
 	this->columns = columns;
 }
 

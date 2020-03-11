@@ -14,16 +14,16 @@ private:
 	int columns;
 
 public:
-	Maze(int rows, int columns); // C'tor
+	Maze(); // C'tor
 	Maze(Maze& other) = delete; // Disable copy c'tor
 	~Maze(); // D'tor
+	void runProgram();
 	void show() const;
 	void solve();
 	// Setters
 	void setUserMaze();
 	void setRandomMaze();
-	void setRows(int rows);
-	void setColumns(int columns);
+	void setRowsAndColumns(int rows, int columns);
 	// Getters
 	char** getMaze() const;
 	int getRows() const;
