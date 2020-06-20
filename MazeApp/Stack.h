@@ -10,9 +10,9 @@ private:
 	Node* topOfStack; // Pointer node to the top of the stack
 
 public:
-	Stack(); // C'tor
-	Stack(const Stack& other) = delete; // Disable copy c'tor
-	~Stack(); // D'tor
+	Stack();
+	Stack(const Stack& other) = delete;
+	~Stack();
 	void makeEmpty();
 	bool isEmpty() const;
 	void push(const Vertex& item);

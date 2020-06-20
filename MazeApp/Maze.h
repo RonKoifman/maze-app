@@ -14,10 +14,10 @@ private:
 	int columns;
 
 public:
-	Maze(); // C'tor
-	Maze(Maze& other) = delete; // Disable copy c'tor
-	~Maze(); // D'tor
-	void runProgram();
+	Maze();
+	Maze(Maze& other) = delete;
+	~Maze();
+	void runMaze();
 	void show() const;
 	void solve();
 	// Setters

@@ -1,11 +1,11 @@
 #include "Stack.h"
 
-Stack::Stack() // C'tor
+Stack::Stack()
 	: topOfStack(nullptr)
 {
 }
 
-Stack::~Stack() // D'tor
+Stack::~Stack()
 {
 	makeEmpty();
 }

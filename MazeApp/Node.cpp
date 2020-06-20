@@ -1,11 +1,11 @@
 #include "Node.h"
 
-Node::Node() // Default C'tor
+Node::Node()
 	: data(), next(nullptr)
 {
 }
 
-Node::Node(const Vertex& data, Node* next) // C'tor
+Node::Node(const Vertex& data, Node* next)
 	: data(data), next(next)
 {
 }

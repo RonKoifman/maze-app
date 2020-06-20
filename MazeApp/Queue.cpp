@@ -1,13 +1,13 @@
 #include "Queue.h"
 
-Queue::Queue(int maxSize) // C'tor
+Queue::Queue(int maxSize)
 	: maxSize(maxSize)
 {
 	data = new Vertex[maxSize];
 	makeEmpty();
 }
 
-Queue::~Queue() // D'tor
+Queue::~Queue()
 {
 	delete[] data;
 }

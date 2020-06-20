@@ -9,9 +9,9 @@ public:
 	Vertex data;
 	Node* next;
 
-	Node(); // Default C'tor
-	Node(const Vertex& data, Node* next = nullptr); // C'tor
-	Node(const Node& other) = delete; // Disable copy c'tor
+	Node();
+	Node(const Vertex& data, Node* next = nullptr);
+	Node(const Node& other) = delete;
 	void insertAfter(Node* node);
 	Node* deleteAfter();
 	// Setters

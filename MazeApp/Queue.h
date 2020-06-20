@@ -14,9 +14,9 @@ private:
 	int maxSize; // Maximum capacity of queue
 
 public:
-	Queue(int maxSize); // C'tor
-	Queue(const Queue& other) = delete; // Disable copy c'tor
-	~Queue(); // D'tor
+	Queue(int maxSize);
+	Queue(const Queue& other) = delete;
+	~Queue();
 	void makeEmpty();
 	bool isEmpty() const;
 	const Vertex& front() const;

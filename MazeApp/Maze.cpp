@@ -1,11 +1,11 @@
 #include "Maze.h"
 
-Maze::Maze() // C'tor
+Maze::Maze()
 	: maze(nullptr), rows(0), columns(0)
 {
 }
 
-Maze::~Maze() // D'tor
+Maze::~Maze()
 {
 	for (int i = 0; i < rows; i++)
 	{
@@ -15,7 +15,7 @@ Maze::~Maze() // D'tor
 	delete[] maze;
 }
 
-void Maze::runProgram()
+void Maze::runMaze()
 {
 	int selection, rows, columns;
 
@@ -36,17 +36,17 @@ void Maze::runProgram()
 	cin >> columns;
 	setRowsAndColumns(rows, columns);
 
-	if (selection == FROM_INPUT) // Set maze from input
+	if (selection == FROM_INPUT)
 	{
 		setUserMaze();
 	}
-	else if (selection == RANDOM) // Set random maze
+	else if (selection == RANDOM)
 	{
 		setRandomMaze();
 	}
 
-	solve(); // Solve the resulting maze
-	show(); // Print solved maze
+	solve(); 
+	show();
 }
 
 void Maze::show() const
@@ -247,7 +247,7 @@ const Vertex& Maze::getRandomNeighbor(Vertex neighbors[], int numOfNeighbors) co
 {
 	int index = rand() % numOfNeighbors;
 
-	return neighbors[index]; // Random neighbor
+	return neighbors[index];
 }
 
 void Maze::solve()
