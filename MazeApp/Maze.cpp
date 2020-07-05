@@ -30,19 +30,22 @@ void Maze::runMaze()
 		exit(INVALID_INPUT_ERROR);
 	}
 
-	cout << endl << "Please enter the number of rows (25 max): ";
+	cout << endl << "(For a random maze, both rows and columns have to be odd, greater than 1)" << endl;
+	cout << endl << "Please enter the number of rows (" << MAX_ROWS << " max): ";
 	cin >> rows;
-	cout << "Please enter the number of columns (80 max): ";
+	cout << "Please enter the number of columns (" << MAX_COLUMNS << " max): ";
 	cin >> columns;
 	setRowsAndColumns(rows, columns);
 
-	if (selection == FROM_INPUT)
+	switch (selection)
 	{
+	case FROM_INPUT:
 		setUserMaze();
-	}
-	else if (selection == RANDOM)
-	{
+		break;
+
+	case RANDOM:
 		setRandomMaze();
+		break;
 	}
 
 	solve(); 

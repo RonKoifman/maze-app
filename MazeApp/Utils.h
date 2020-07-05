@@ -12,8 +12,6 @@
 using namespace std;
 
 // Consts declaration
-const int FROM_INPUT = 1;
-const int RANDOM = 2;
 const int MAX_ROWS = 25;
 const int MAX_COLUMNS = 80;
 const char FREE = ' ';
@@ -21,6 +19,12 @@ const char WALL = '*';
 const char PATH = '$';
 
 // Enums declaration
+enum SelectionType
+{
+	FROM_INPUT = 1,
+	RANDOM = 2
+};
+
 enum ErrorType
 {
 	INVALID_INPUT_ERROR = 1,
